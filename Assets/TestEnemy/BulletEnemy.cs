@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class BulletEnemy : MonoBehaviour
 {
     [SerializeField] private float bulletLife;
+    private GameObject _player;
 
     public void OnCollisionEnter(Collision collision)
     {
@@ -12,6 +15,16 @@ public class BulletEnemy : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    public void Start()
+    {
+        _player = GameObject.FindWithTag("Player");
+    }
+
+    public void Update()
+    {
+        transform.LookAt(_player.transform.position);
     }
 
     private void Awake()
