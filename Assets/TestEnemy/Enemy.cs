@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Enemy : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class Enemy : MonoBehaviour
     public Transform _spawnPoint;
 
     public int _hp;
+
+    [SerializeField] private AudioSource _source;
+    [SerializeField] private AudioClip[] _gun;
+    [SerializeField] private AudioClip[] _deathSound;
 
     [SerializeField] private float _speedBullet;
     [SerializeField] private float _fireRate;
@@ -21,6 +26,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         _player = GameObject.FindWithTag("Player");
+        _source = GetComponent<AudioSource>();
     }
 
 
@@ -47,6 +53,7 @@ public class Enemy : MonoBehaviour
     private void Fire()
     {
         GetComponent<Animator>().SetTrigger("Fire");
+        _source.PlayOneShot(_gun[Random.Range(0, _gun.Length)]);
         GameObject bullet = Instantiate(_bullet, _spawnPoint.position, Quaternion.identity);
         Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
         bulletRigidbody.velocity = (_player.transform.position - _spawnPoint.position).normalized * _speedBullet;
@@ -55,6 +62,7 @@ public class Enemy : MonoBehaviour
 
     private void Death()
     {
+        _source.PlayOneShot(_deathSound[Random.Range(0, _deathSound.Length)]);
         Destroy(this.gameObject, _deathTime);
     }
 }
