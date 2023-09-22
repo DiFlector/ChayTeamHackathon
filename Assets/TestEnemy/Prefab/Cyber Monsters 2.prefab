@@ -4892,7 +4892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f8f8de47f17a84bab1ce9539a1f831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bullet: {fileID: 7602794642739724083, guid: 02f498a831a14244b8fb48c4251208f9, type: 3}
+  _bullet: {fileID: 6859818465480587943, guid: 1ffdb195d5f35794ebc2e317ccd5bab1, type: 3}
   _spawnPoint: {fileID: 7962251843307055472}
   _hp: 100
   _speedBullet: 30

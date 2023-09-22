@@ -479,6 +479,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cyber Monsters 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5857461056936470925, guid: 18c9ded8c6748d84cb0f2965ac068b3f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962251843307055472, guid: 18c9ded8c6748d84cb0f2965ac068b3f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962251843307055472, guid: 18c9ded8c6748d84cb0f2965ac068b3f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962251843307055472, guid: 18c9ded8c6748d84cb0f2965ac068b3f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962251843307055472, guid: 18c9ded8c6748d84cb0f2965ac068b3f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962251843307055472, guid: 18c9ded8c6748d84cb0f2965ac068b3f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -492,6 +522,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5288577851334730439, guid: 339986ccea5c9a94592c4f768f385383,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.75
+      objectReference: {fileID: 0}
     - target: {fileID: 8327406750576415976, guid: 339986ccea5c9a94592c4f768f385383,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -546,6 +581,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Patrol Bot
+      objectReference: {fileID: 0}
+    - target: {fileID: 8708612566470643282, guid: 339986ccea5c9a94592c4f768f385383,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
