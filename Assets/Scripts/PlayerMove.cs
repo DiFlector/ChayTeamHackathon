@@ -14,7 +14,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float mouseSensivity;
 
 
-    private bool _canJump;
+    [SerializeField] private bool _canJump;
 
     void Start()
     {
@@ -44,21 +44,22 @@ public class PlayerMove : MonoBehaviour
             Jump();
         }
 
-        if (Input.GetKey(KeyCode.W)) 
+        if (Input.GetKey(KeyCode.W))
         {
-            transform.position += new Vector3(0, 0, 1) * _speed * Time.deltaTime;
+            transform.Translate(0, 0, _speed * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.position += new Vector3(0, 0, -1) * _speed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.position += new Vector3(1, 0, 0) * _speed * Time.deltaTime;
+            transform.Translate(0, 0, _speed * Time.deltaTime * -1);
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.position += new Vector3(-1, 0, 0) * _speed * Time.deltaTime;
+            transform.Translate(_speed * Time.deltaTime * -1, 0, 0);
+
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.Translate(_speed * Time.deltaTime, 0, 0);
         }
     }
 
