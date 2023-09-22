@@ -119,6 +119,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &218742684
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1021122236882404, guid: c08d93b9ce0c1824882e8195cb0a9afe, type: 3}
+      propertyPath: m_Name
+      value: Prefab_Steampunk_Sword_Gold
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398898608242442, guid: c08d93b9ce0c1824882e8195cb0a9afe, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398898608242442, guid: c08d93b9ce0c1824882e8195cb0a9afe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398898608242442, guid: c08d93b9ce0c1824882e8195cb0a9afe, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.243
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398898608242442, guid: c08d93b9ce0c1824882e8195cb0a9afe, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398898608242442, guid: c08d93b9ce0c1824882e8195cb0a9afe, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398898608242442, guid: c08d93b9ce0c1824882e8195cb0a9afe, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398898608242442, guid: c08d93b9ce0c1824882e8195cb0a9afe, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398898608242442, guid: c08d93b9ce0c1824882e8195cb0a9afe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398898608242442, guid: c08d93b9ce0c1824882e8195cb0a9afe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398898608242442, guid: c08d93b9ce0c1824882e8195cb0a9afe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c08d93b9ce0c1824882e8195cb0a9afe, type: 3}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,7 +935,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5, type: 3}
---- !u!1001 &6293764806320888731
+--- !u!1001 &391814260025770017
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -886,71 +943,66 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5295747233981958708, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5,
-        type: 3}
-      propertyPath: m_Name
-      value: Biomech_Mutant_Skin_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8498945829246750549, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5,
+    - target: {fileID: 3256525901915527490, guid: b7090a1515bab5f44abdad50e3754098,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.724
       objectReference: {fileID: 0}
-    - target: {fileID: 8498945829246750549, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5,
+    - target: {fileID: 3256525901915527490, guid: b7090a1515bab5f44abdad50e3754098,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8498945829246750549, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5,
+    - target: {fileID: 3256525901915527490, guid: b7090a1515bab5f44abdad50e3754098,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8498945829246750549, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5,
+    - target: {fileID: 3256525901915527490, guid: b7090a1515bab5f44abdad50e3754098,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8498945829246750549, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5,
+    - target: {fileID: 3256525901915527490, guid: b7090a1515bab5f44abdad50e3754098,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8498945829246750549, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5,
+    - target: {fileID: 3256525901915527490, guid: b7090a1515bab5f44abdad50e3754098,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8498945829246750549, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5,
+    - target: {fileID: 3256525901915527490, guid: b7090a1515bab5f44abdad50e3754098,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8498945829246750549, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5,
+    - target: {fileID: 3256525901915527490, guid: b7090a1515bab5f44abdad50e3754098,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8498945829246750549, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5,
+    - target: {fileID: 3256525901915527490, guid: b7090a1515bab5f44abdad50e3754098,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8498945829246750549, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5,
+    - target: {fileID: 3256525901915527490, guid: b7090a1515bab5f44abdad50e3754098,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8538603648722633494, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5,
+    - target: {fileID: 5486720792458892043, guid: b7090a1515bab5f44abdad50e3754098,
         type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 7348c21fddc5055439309ca15bb55050, type: 2}
+      propertyPath: m_Name
+      value: Biomech_Mutant_Skin_1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 5d9d0b1c8af27cc4c94d5a61a482efb5, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: b7090a1515bab5f44abdad50e3754098, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -960,7 +1012,8 @@ SceneRoots:
   - {fileID: 763650645}
   - {fileID: 858954205}
   - {fileID: 2114008464}
-  - {fileID: 6293764806320888731}
+  - {fileID: 391814260025770017}
   - {fileID: 607079519}
   - {fileID: 2116212881}
   - {fileID: 547391711}
+  - {fileID: 218742684}
