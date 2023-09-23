@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
@@ -16,10 +17,12 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private GameObject hook;
     [SerializeField] private LineRenderer rope;
 
+    [SerializeField] private float climbSpeed;
     private float angle;
     private Rigidbody rb;
     private float releaseTimer;
     private float cooldownTimer;
+    private float collisionCount;
     [SerializeField] private float cooldownTime;
     [SerializeField] private float jumpPower;
     [SerializeField] private float jetpackPower;
@@ -40,6 +43,7 @@ public class PlayerMove : MonoBehaviour
 
     void Start()
     {
+        collisionCount = 0;
         cooldownTimer = Time.realtimeSinceStartup - cooldownTime;
         rb = GetComponent<Rigidbody>();
         hookGrabbed = false;
@@ -56,7 +60,17 @@ public class PlayerMove : MonoBehaviour
         if (collision.gameObject.tag == "Floor")
         {
             _canJump = true;
+            collisionCount += 1;
         }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "Floor" && collisionCount == 1)
+        {
+            _canJump = false;
+        }
+        collisionCount -= 1;
     }
 
     void Update()
@@ -136,22 +150,14 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {
-                print($"{hookMaxLenght}, {hookLenght}, {(hook.transform.position - gameObject.transform.position).magnitude}");
+                if (Input.GetKey(KeyCode.Q))
+                {
+                    hookLenght -= climbSpeed * Time.deltaTime;
+                }
+                //print($"{hookMaxLenght}, {hookLenght}, {(hook.transform.position - gameObject.transform.position).magnitude}, {_canJump}, {collisionCount}");
                 if ((hook.transform.position - gameObject.transform.position).magnitude >= hookLenght)
                 {
-                    /*
-                    angle = Vector3.Angle(rb.velocity, hook.transform.position - gameObject.transform.position);
-                    if (angle > 90)
-                    {
-                        rb.velocity = Vector3.Slerp(rb.velocity, hook.transform.position - gameObject.transform.position, angle - 90) +
-                            hook.transform.position + (gameObject.transform.position - hook.transform.position).normalized * hookLenght - gameObject.transform.position;
-                    }
-                    else
-                    {
-                        rb.velocity += hook.transform.position + (gameObject.transform.position - hook.transform.position).normalized * hookLenght - gameObject.transform.position;
-                    }
-                    */
-                    rb.velocity += hook.transform.position + (gameObject.transform.position - hook.transform.position).normalized * hookLenght - gameObject.transform.position;
+                    rb.velocity += (hook.transform.position + (gameObject.transform.position - hook.transform.position).normalized * hookLenght - gameObject.transform.position) * 0.25f;
                 }
             }
             if (Input.GetMouseButtonDown(1) && Time.realtimeSinceStartup - releaseTimer > 1)
@@ -161,6 +167,7 @@ public class PlayerMove : MonoBehaviour
                 wasGrabbed = false;
                 rope.gameObject.SetActive(false);
                 hook.SetActive(false);
+                hook.GetComponent<Rigidbody>().isKinematic = false;
                 cooldownTimer = Time.realtimeSinceStartup;
             }
         }
