@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private AudioSource _source;
     [SerializeField] private AudioClip[] _gun;
     [SerializeField] private AudioClip[] _deathSound;
+    [SerializeField] private AudioClip[] _takeDamage;
     [SerializeField] private GameObject _idleSound;
 
     [SerializeField] private float _speedBullet;
@@ -97,6 +98,10 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(int _damage)
     {
+        if (!_source.isPlaying)
+        {
+            _source.PlayOneShot(_takeDamage[Random.Range(0, _takeDamage.Length)]);
+        }
         _hp -= _damage;
         _slider.value = _hp;
     }
