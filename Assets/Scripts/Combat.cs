@@ -43,8 +43,7 @@ public class Combat : MonoBehaviour
     public SteamPunkGun shotgun, flamethrower;
 
     private List<HighTechGun> guns;
-
-    private List<GameObject> loot;
+    public List<GameObject> loot;
     
     public class HighTechGun
     {
@@ -144,7 +143,7 @@ public class Combat : MonoBehaviour
         print(guns[0]);
         
         if (!(lasergun.isAvailable && pistol.isAvailable && shotgun.isAvailable && flamethrower.isAvailable &&
-              disabledSword.isAvailable && highTechSword.isAvailable && steamPunkSword.isAvailable))
+              highTechSword.isAvailable && steamPunkSword.isAvailable))
         {
             foreach (GameObject lootable in loot)
             {
@@ -152,8 +151,6 @@ public class Combat : MonoBehaviour
                 {
                     foreach (HighTechGun gun in guns)
                     {
-                        //print(gun.gunObject.tag);
-                        print(lootable.tag);
                         if ((lootable.tag).Substring(1) == gun.gunObject.tag)
                         {
                             loot.Remove(lootable);
@@ -196,19 +193,19 @@ public class Combat : MonoBehaviour
         {
             currentWeapon = 3;
             DisableAllWeapon();
-            guns[FindWeaponID()].gunObject.GetComponent<MeshCollider>().enabled = true;
+            guns[FindWeaponID()].gunObject.GetComponent<MeshRenderer>().enabled = true;
         }
         else if (Input.GetKeyDown(buttonToAdditionalWeapon) && (currentWeapon != 1) && (guns[FindWeaponID()].isAvailable) && !isReloading && (fireDelayTemp < 3))
         {
             currentWeapon = 1;
             DisableAllWeapon();
-            guns[FindWeaponID()].gunObject.GetComponent<MeshCollider>().enabled = true;
+            guns[FindWeaponID()].gunObject.GetComponent<MeshRenderer>().enabled = true;
         }
         else if (Input.GetKeyDown(buttonToSword) && (currentWeapon != 5) && (guns[FindWeaponID()].isAvailable) && !isReloading && (fireDelayTemp < 3))
         {
             currentWeapon = 5;
             DisableAllWeapon();
-            guns[FindWeaponID()].gunObject.GetComponent<MeshCollider>().enabled = true;
+            guns[FindWeaponID()].gunObject.GetComponent<MeshRenderer>().enabled = true;
         }
         
         if (Input.GetKeyDown(buttonToSwitchDimension))
@@ -223,7 +220,7 @@ public class Combat : MonoBehaviour
     {
         foreach (HighTechGun gun in guns)
         {
-            gun.gunObject.GetComponent<MeshCollider>().enabled = false;
+            gun.gunObject.GetComponent<MeshRenderer>().enabled = false;
         }
     }
     
