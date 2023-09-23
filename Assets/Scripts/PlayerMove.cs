@@ -17,8 +17,8 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private GameObject hook;
     [SerializeField] private LineRenderer rope;
 
+    public States state;
     [SerializeField] private float climbSpeed;
-    private float angle;
     private Rigidbody rb;
     private float releaseTimer;
     private float cooldownTimer;
@@ -108,13 +108,32 @@ public class PlayerMove : MonoBehaviour
             {
                 currentSpeed += new Vector3(Mathf.Sin(Mathf.Deg2Rad * (90 + transform.rotation.eulerAngles.y)), 0, Mathf.Cos(Mathf.Deg2Rad * (90 + transform.rotation.eulerAngles.y)));
             }
+            
             currentSpeed = _speed * currentSpeed.normalized;
             rb.velocity = currentSpeed;
+
+            if (currentSpeed != Vector3.zero)
+            {
+                state = States.walking;
+            }
+            else
+            {
+                state = States.staying;
+            }
+            if (jetpackFuel < maxFuel)
+            {
+                jetpackFuel += Time.deltaTime;
+            }
         }
         else
         {
             rb.AddForce(0, -gravityPower, 0, ForceMode.Impulse);
+            if (jetpackFuel > 0)
+            {
+                JetpackFly();
+            }
         }
+
         //print($"{Input.GetMouseButtonDown(1)} && {!hookActive} && {Time.realtimeSinceStartup - cooldownTimer > cooldownTime}");
         if (Input.GetMouseButtonDown(1) && !hookActive && Time.realtimeSinceStartup - cooldownTimer > cooldownTime)
         {
@@ -127,6 +146,7 @@ public class PlayerMove : MonoBehaviour
             rope.SetPosition(0, gameObject.transform.position);
             rope.SetPosition(1, hook.transform.position);
             releaseTimer = Time.realtimeSinceStartup;
+            state = States.releasing;
         }
         if (hookActive)
         {
@@ -136,6 +156,7 @@ public class PlayerMove : MonoBehaviour
             {
                 hookLenght = (hook.transform.position - gameObject.transform.position).magnitude;
                 wasGrabbed = true;
+                state = States.grappling;
             }
             if (!hookGrabbed)
             {
@@ -171,26 +192,6 @@ public class PlayerMove : MonoBehaviour
                 cooldownTimer = Time.realtimeSinceStartup;
             }
         }
-
-        if (!_canJump)
-        {
-            if (jetpackFuel > 0)
-            {
-                JetpackFly();
-            }
-        }
-        else
-        {
-            if (jetpackFuel < maxFuel)
-            {
-                jetpackFuel += Time.deltaTime;
-            }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        
     }
 
     void Jump()
@@ -201,11 +202,6 @@ public class PlayerMove : MonoBehaviour
 
     void JetpackFly()
     {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            rb.AddForce(0, jetpackPower * Time.deltaTime, 0, ForceMode.Impulse);
-            jetpackFuel -= 5f * Time.deltaTime;
-        }
         if (Input.GetKey(KeyCode.LeftShift))
         {
             rb.velocity -= currentSpeed;
@@ -234,9 +230,30 @@ public class PlayerMove : MonoBehaviour
             currentSpeed = jetpackHorizontalPower * currentSpeed.normalized;
             if (currentSpeed == Vector3.zero)
             {
+                state = States.staying;
                 currentSpeed = lastSpeed;
+            }
+            else
+            {
+                state = States.flying;
             }
             rb.velocity += currentSpeed;
         }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            rb.AddForce(0, jetpackPower * Time.deltaTime, 0, ForceMode.Impulse);
+            jetpackFuel -= 5f * Time.deltaTime;
+            state = States.flying;
+        }
     }
+}
+
+public enum States
+{
+    staying,
+    walking,
+    flying,
+    releasing,
+    grappling
 }
