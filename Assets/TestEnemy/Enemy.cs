@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _speedBullet;
     [SerializeField] private float _fireRate;
     [SerializeField] private float _deathTime;
+    [SerializeField] private float _range;
 
     [SerializeField] private BoxCollider box;
 
@@ -48,7 +49,7 @@ public class Enemy : MonoBehaviour
     {
         _slider.value = _hp;
 
-        if (_hp <= 0 )
+        if (_hp <= 0)
         {
             _idleSound.SetActive(false);
             _fireRate = 0;
@@ -73,11 +74,18 @@ public class Enemy : MonoBehaviour
 
         transform.LookAt(_player.transform.position);
 
-        if (Time.time > _nextFireTime)
+        Vector3 direction = Vector3.forward;
+        Ray theRay = new Ray(transform.position, transform.TransformDirection(direction * _range));
+        Debug.DrawRay(transform.position, transform.TransformDirection(direction * _range));
+
+        if (Physics.Raycast(theRay, out RaycastHit hit, _range))
         {
-            Fire();
-            _source.PlayOneShot(_gun[Random.Range(0, _gun.Length)]);
-            _nextFireTime = Time.time + 1f / _fireRate;
+            if (hit.collider.tag == "Player" && Time.time > _nextFireTime)
+            {
+                Fire();
+                _source.PlayOneShot(_gun[Random.Range(0, _gun.Length)]);
+                _nextFireTime = Time.time + 1f / _fireRate;
+            }
         }
     }
 

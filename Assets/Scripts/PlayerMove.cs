@@ -38,6 +38,8 @@ public class PlayerMove : MonoBehaviour
         _healthBar.maxValue = _maxHealth;
         _healthBar.value = _health;
         _audioSource = GetComponent<AudioSource>();
+
+
         _canJump = true;
         Cursor.visible = false;
     }

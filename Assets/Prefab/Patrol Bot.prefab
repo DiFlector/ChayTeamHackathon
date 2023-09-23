@@ -620,6 +620,7 @@ MonoBehaviour:
   _speedBullet: 30
   _fireRate: 0.8
   _deathTime: 4
+  _range: 35
   box: {fileID: 6769513053095373899}
 --- !u!82 &4025783329246861218
 AudioSource:
