@@ -1824,13 +1824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c278fd2e44514147a53504c655a60e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
-  DeploymentHeight: 5
-  _camera: {fileID: 2328032087244390277}
   _deathTime: 1
-  cx: 0
-  cy: 0
-  mouseSensivity: 300
   _healthBar: {fileID: 8778585916807417038}
   _maxHealth: 100
   _health: 0
@@ -1844,7 +1838,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 733116944e7931746bbd9162a415bda6, type: 3}
   - {fileID: 8300000, guid: 71629a3924de1f341a450b86221f9241, type: 3}
   - {fileID: 8300000, guid: fbc2660bc6751c146b71015d3eccb752, type: 3}
-  _canJump: 0
 --- !u!114 &2748481987074181500
 MonoBehaviour:
   m_ObjectHideFlags: 0
