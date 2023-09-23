@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -45,6 +46,14 @@ public class Combat : MonoBehaviour
     public GameObject player = GameObject.FindGameObjectWithTag("Player");
     public GameObject prefabSphereMelee;
     public GameObject hand = GameObject.FindGameObjectWithTag("Hand");
+    public GameObject looter = GameObject.FindGameObjectWithTag("Loot");
+    
+    public static GameObject _Pistol = GameObject.FindGameObjectWithTag("_Pistol");
+    public static GameObject _Lasergun = GameObject.FindGameObjectWithTag("_Lasergun");
+    public static GameObject _Shotgun = GameObject.FindGameObjectWithTag("_Shotgun");
+    public static GameObject _Flamethrower = GameObject.FindGameObjectWithTag("_Flamethrower");
+    public static GameObject _Sword = GameObject.FindGameObjectWithTag("_Sword");
+    public static GameObject _TriggerSword = GameObject.FindGameObjectWithTag("_TriggerSword");
     
     public Transform spawnPointSphereMelee;
     
@@ -53,22 +62,24 @@ public class Combat : MonoBehaviour
     public int previousWeapon = 0;
     public int dimension = 1;
     public bool isDimensionChanged = false;
+    public float lastTravelTime = Time.time;
     public float timeTemp = -1f;
     public bool isReloading = false;
-    public float timeTempReload = -1f
+    public float timeTempReload = -1f;
+    public int fireDelayTemp = -1;
     
     public MouseButton buttonToShoot = MouseButton.Left;
     public KeyCode buttonToSwitchDimension = KeyCode.Tab;
     public KeyCode buttonToMainWeapon = KeyCode.Alpha1;
     public KeyCode buttonToAdditionalWeapon = KeyCode.Alpha2;
     public KeyCode buttonToSword = KeyCode.Alpha3;
-
     
-    public HighTechGun lasergun, pistol;
+    public HighTechGun lasergun, pistol, disabledSword, highTechSword, steamPunkSword;
     public SteamPunkGun shotgun, flamethrower;
-    public BladeGun disabledSword, highTechSword, steamPunkSword;
 
     private List<HighTechGun> guns;
+
+    private List<GameObject> loot = new List<GameObject>{_Pistol, _Lasergun, _Shotgun, _Flamethrower, _Sword, _TriggerSword};
     
     public class HighTechGun
     {
@@ -92,35 +103,15 @@ public class Combat : MonoBehaviour
 
     public class SteamPunkGun : HighTechGun 
     {
-        public bool isFireGun;
         public float radius;
         public int ammo;
 
         public SteamPunkGun(float fireRate, GameObject gunObject, bool isAvailable, float distance, int damage,
-            bool isFireGun, float radius, int ammo) : base(fireRate, gunObject, isAvailable, distance, damage)
+            float radius, int ammo) : base(fireRate, gunObject, isAvailable, distance, damage)
         {
-            this.isFireGun = isFireGun;
             lastFireTime = -fireRate;
             this.radius = radius;
             this.ammo = ammo;
-        }
-    }
-    
-    public class BladeGun : HighTechGun
-    {
-        public float abilityRate;
-        public float lastAbilityTime;
-        public bool dimensionID;
-        public float range;
-
-        public BladeGun(float fireRate, GameObject gunObject, bool isAvailable, float distance, int damage,
-            float abilityRate, bool dimensionID, float range) : base(fireRate, gunObject, isAvailable, distance, damage)
-        {
-            this.abilityRate = abilityRate;
-            lastAbilityTime = -abilityRate;
-            lastFireTime = -fireRate;
-            this.dimensionID = dimensionID;
-            this.range = range;
         }
     }
     
@@ -135,19 +126,19 @@ public class Combat : MonoBehaviour
             false, 100f, 8);
         
         shotgun = new SteamPunkGun(1f, GameObject.FindGameObjectWithTag("Shotgun"), false,
-            12f, 50, false, 3f,  4);
+            12f, 50, 3f,  4);
         
         flamethrower = new SteamPunkGun(0.25f, GameObject.FindGameObjectWithTag("Flamehrower"), false,
-            7f, 50, true, 3.5f,  10000);
+            7f, 5, 3.5f,  100);
         
-        disabledSword = new BladeGun(1f, GameObject.FindGameObjectWithTag("DisabledSword"), false,
-            3f, 34, 0.5f, false, 3f);
+        disabledSword = new HighTechGun(1f, GameObject.FindGameObjectWithTag("DisabledSword"), false,
+            3f, 34);
         
-        highTechSword = new BladeGun(1f, GameObject.FindGameObjectWithTag("HighTechSword"), false,
-            3f, 50, 0.5f, false, 3f);
+        highTechSword = new HighTechGun(1f, GameObject.FindGameObjectWithTag("HighTechSword"), false,
+            3f, 34);
         
-        steamPunkSword = new BladeGun(1f, GameObject.FindGameObjectWithTag("SteamPunkSword"), false,
-            3f, 50, 0.5f, true, 3f);
+        steamPunkSword = new HighTechGun(1f, GameObject.FindGameObjectWithTag("SteamPunkSword"), false,
+            3f, 34);
         
         List<HighTechGun> guns = new List<HighTechGun>{lasergun, pistol, shotgun, flamethrower, disabledSword, highTechSword, steamPunkSword};
     }
@@ -167,19 +158,30 @@ public class Combat : MonoBehaviour
             timeTempReload = -1f;
             isReloading = false;
         }
-        
-        
-            
-        
-        
 
-
-
-
+        if ((fireDelayTemp > -1) && (Time.time >= 0.1f + flamethrower.lastFireTime))
+        {
+            fireDelayTemp--;
+            Conecast(flamethrower);
+        }
+        
         if (!(lasergun.isAvailable && pistol.isAvailable && shotgun.isAvailable && flamethrower.isAvailable &&
               disabledSword.isAvailable && highTechSword.isAvailable && steamPunkSword.isAvailable))
         {
-
+            foreach (var lootable in loot)
+            {
+                if (Vector3.Distance(player.transform.position, lootable.transform.position) <= 1.5f)
+                {
+                    foreach (HighTechGun gun in guns)
+                    {
+                        if ((lootable.tag).Substring(1) == gun.gunObject.tag)
+                        {
+                            gun.isAvailable = true;
+                        }
+                    }
+                    Destroy(lootable);
+                }
+            }
         }
 
         if ((currentWeapon !=  previousWeapon) || (isDimensionChanged))
@@ -197,27 +199,22 @@ public class Combat : MonoBehaviour
     }
 
     /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// ///
-
-    void Reloading()
-    {
-        
-    }
-
+    
     void EchoInputs()
     {
-        if (Input.GetKeyDown(buttonToMainWeapon) && (currentWeapon != 3) && (guns[FindWeaponID()].isAvailable) && !isReloading)
+        if (Input.GetKeyDown(buttonToMainWeapon) && (currentWeapon != 3) && (guns[FindWeaponID()].isAvailable) && !isReloading && (fireDelayTemp < 3))
         {
             currentWeapon = 3;
             DisableAllWeapon();
             guns[FindWeaponID()].gunObject.SetActive(true);
         }
-        else if (Input.GetKeyDown(buttonToAdditionalWeapon) && (currentWeapon != 1) && (guns[FindWeaponID()].isAvailable) && !isReloading)
+        else if (Input.GetKeyDown(buttonToAdditionalWeapon) && (currentWeapon != 1) && (guns[FindWeaponID()].isAvailable) && !isReloading && (fireDelayTemp < 3))
         {
             currentWeapon = 1;
             DisableAllWeapon();
             guns[FindWeaponID()].gunObject.SetActive(true);
         }
-        else if (Input.GetKeyDown(buttonToSword) && (currentWeapon != 5) && (guns[FindWeaponID()].isAvailable) && !isReloading)
+        else if (Input.GetKeyDown(buttonToSword) && (currentWeapon != 5) && (guns[FindWeaponID()].isAvailable) && !isReloading && (fireDelayTemp < 3))
         {
             currentWeapon = 5;
             DisableAllWeapon();
@@ -245,7 +242,7 @@ public class Combat : MonoBehaviour
         switch (FindWeaponID())    // Сам разбирайся в этой магии, если ты сюда залез xD
         {
             case 1: //пистолет
-                if (HighTechAttack(pistol)); //проверки для звука атаки
+                if (HighTechAttack(pistol)); //проверки для звука атаки и эффектов
                 break;
             
             case 2: //дробовик
@@ -270,7 +267,7 @@ public class Combat : MonoBehaviour
         }
     }
 
-    bool SwordAttack(BladeGun gunObject)
+    bool SwordAttack(HighTechGun gunObject)
     {
         if (disabledSword.isAvailable)
         {
@@ -319,28 +316,42 @@ public class Combat : MonoBehaviour
             isReloading = true;
             timeTempReload = Time.time;
         }
-        else if (Time.time > gunObject.lastFireTime + gunObject.fireRate)
+        else if ((gunObject == flamethrower) && (gunObject.ammo == 0)) // ПАР
+        {
+            fireDelayTemp = -1;
+        }
+        else if ((Time.time > gunObject.lastFireTime + gunObject.fireRate) && (gunObject == shotgun))
         {
             gunObject.lastFireTime = Time.time;
-
-            float coneRadius = gunObject.distance * Mathf.Tan(gunObject.radius * Mathf.Deg2Rad);
-            Vector3 coneDirection = Camera.main.transform.forward;
-
-            RaycastHit[] hits = Physics.SphereCastAll(Camera.main.transform.position, coneRadius, coneDirection,
-                gunObject.distance);
-
-            gunObject.ammo -= 1;
-
-            foreach (RaycastHit hit in hits)
-            {
-                if (hit.collider.CompareTag(enemyTag))
-                {
-
-                }
-            }
+            Conecast(gunObject);
             return true;
         }
+        else if ((fireDelayTemp == -1) && (gunObject == flamethrower))
+        {
+            fireDelayTemp = 9;
+        }
         return false;
+    }
+
+    void Conecast(SteamPunkGun gunObject)
+    {
+        gunObject.lastFireTime = Time.time;
+        
+        float coneRadius = gunObject.distance * Mathf.Tan(gunObject.radius * Mathf.Deg2Rad);
+        Vector3 coneDirection = Camera.main.transform.forward;
+
+        RaycastHit[] hits = Physics.SphereCastAll(Camera.main.transform.position, coneRadius, coneDirection,
+            gunObject.distance);
+
+        gunObject.ammo -= 1;
+
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.collider.CompareTag(enemyTag))
+            {
+
+            }
+        }
     }
     
     int FindWeaponID()
@@ -350,7 +361,7 @@ public class Combat : MonoBehaviour
 
     void SwitchDimension()
     {
-        if (steamPunkSword.isAvailable && highTechSword.isAvailable)
+        if ((steamPunkSword.isAvailable && highTechSword.isAvailable) && (Time.time > lastTravelTime + 0.5f))
         {
             dimension = (dimension == 1) ? 2 : 1;
             steamPunkSword.gunObject.SetActive(dimension == 1);
@@ -358,7 +369,6 @@ public class Combat : MonoBehaviour
             isDimensionChanged = true;
         }
     }
-    
 }
 
 
