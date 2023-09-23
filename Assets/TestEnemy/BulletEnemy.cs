@@ -15,7 +15,7 @@ public class BulletEnemy : MonoBehaviour
     {
         if (collision.collider.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerMove>().TakeDamage(_damage);
+            collision.gameObject.GetComponent<Player>().TakeDamage(_damage);
             Destroy(this.gameObject);
         }
     }
