@@ -10,6 +10,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] float DeploymentHeight;
     public GameObject _camera;
 
+
     [SerializeField] private float _deathTime;
     [SerializeField] private float cx;
     [SerializeField] private float cy;
@@ -32,6 +33,7 @@ public class PlayerMove : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1;
         _health = _maxHealth;
         _healthBar.maxValue = _maxHealth;
         _healthBar.value = _health;

@@ -62,6 +62,15 @@ public class Enemy : MonoBehaviour
             Death();
         }
 
+        if (Time.timeScale < 1.0f)
+        {
+            _idleSound.SetActive(false);
+        }
+        else
+        {
+            _idleSound.SetActive(true);
+        }
+
         transform.LookAt(_player.transform.position);
 
         if (Time.time > _nextFireTime)
