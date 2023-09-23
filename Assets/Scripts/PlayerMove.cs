@@ -68,7 +68,7 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && _canJump == true)
         {
             _canJump = false;
-            GetComponent<Rigidbody>().AddForce(0, 400, 0);
+            GetComponent<Rigidbody>().AddForce(0, 1000, 0);
         }
     }
 
