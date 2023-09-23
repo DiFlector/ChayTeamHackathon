@@ -7,66 +7,31 @@ using UnityEditor.Callbacks;
 using UnityEngine;
 
 
-/*
- * Привет, вот небольшой гайд если заблудился:
- * 
- * 1.1) Для коректной работы скрипта к объекту игрока должен быть прикреплен невидимый объект,
- * по объему больше, чем сам объект "Игрок". Этот объект толжен иметь тег "Looter"
- * 1.2) Объкеты подбираемые игроком должны иметь теги "_Pistol", "_Lasergun", "_Shotgun",
- * "_Flamethrower" и "_Sword" соответсвенно
- * 
- * 2.1) К объектну игрока должен быть прикреплены объекты с тегами "Lasergun", "Pistol", "Shotgun",
- * "Flamehrower", "DisabledSword", "HighTechSword" и "SteamPunkSword" соответсвенно
- * 2.2) Эти объекты С САМОГО НАЧАЛА должны быть выключены!!!!
- *
- * 3.1) Переменная отслеживающая измерение |public int dimension|
- *      Смысл на значение:
- *      1 - high-tech
- *      2 - steampunk
- * 3.2) Оружие отслеживается при помощи |public int currentWeapon|
- *      Смысл на значение:
- *      0 - отсутсвие оружия (в самом начале)
- *      1 - пистолет/дробовик
- *      3 - лазерган/огнемет
- *      5 - меч
- *
- * 4.1) Методы снизу мэйна
- * 4.2) В метод |switchDimension()| добавить реализацию перехода между мирами
- *                  (планово переадресация на метод ветки World)
- * 
- *
- *
- *
- *
- *                                                                                                                                                                                    Если ты это читаешь, вероятно я сплю (*^.^*)  
- */
-
 public class Combat : MonoBehaviour
 {
-    public GameObject player = GameObject.FindGameObjectWithTag("Player");
+    public GameObject player;
     public GameObject prefabSphereMelee;
-    public GameObject hand = GameObject.FindGameObjectWithTag("Hand");
-    public GameObject looter = GameObject.FindGameObjectWithTag("Loot");
+
+    public static GameObject _Pistol;
+    public static GameObject _Lasergun;
+    public static GameObject _Shotgun;
+    public static GameObject _Flamethrower;
+    public static GameObject _DisabledSword;
+    public static GameObject _TriggerSword;
     
-    public static GameObject _Pistol = GameObject.FindGameObjectWithTag("_Pistol");
-    public static GameObject _Lasergun = GameObject.FindGameObjectWithTag("_Lasergun");
-    public static GameObject _Shotgun = GameObject.FindGameObjectWithTag("_Shotgun");
-    public static GameObject _Flamethrower = GameObject.FindGameObjectWithTag("_Flamethrower");
-    public static GameObject _Sword = GameObject.FindGameObjectWithTag("_Sword");
-    public static GameObject _TriggerSword = GameObject.FindGameObjectWithTag("_TriggerSword");
-    
-    public Transform spawnPointSphereMelee;
+    private Transform spawnPointSphereMelee;
     
     public string enemyTag = "Enemy";
     public int currentWeapon = 0;
     public int previousWeapon = 0;
     public int dimension = 1;
     public bool isDimensionChanged = false;
-    public float lastTravelTime = Time.time;
+    public float lastTravelTime = -1f;
     public float timeTemp = -1f;
     public bool isReloading = false;
     public float timeTempReload = -1f;
     public int fireDelayTemp = -1;
+    public bool breakFlag = false;
     
     public MouseButton buttonToShoot = MouseButton.Left;
     public KeyCode buttonToSwitchDimension = KeyCode.Tab;
@@ -79,7 +44,7 @@ public class Combat : MonoBehaviour
 
     private List<HighTechGun> guns;
 
-    private List<GameObject> loot = new List<GameObject>{_Pistol, _Lasergun, _Shotgun, _Flamethrower, _Sword, _TriggerSword};
+    private List<GameObject> loot;
     
     public class HighTechGun
     {
@@ -119,6 +84,18 @@ public class Combat : MonoBehaviour
      
     void Start()
     {
+        
+        player = GameObject.FindGameObjectWithTag("Player");
+        //hand = GameObject.FindGameObjectWithTag("Hand");
+        
+        _Pistol = GameObject.FindGameObjectWithTag("_Pistol");
+        _Lasergun = GameObject.FindGameObjectWithTag("_Lasergun");
+        _Shotgun = GameObject.FindGameObjectWithTag("_Shotgun");
+        _Flamethrower = GameObject.FindGameObjectWithTag("_Flamethrower");
+        _DisabledSword = GameObject.FindGameObjectWithTag("_DisabledSword");
+        _TriggerSword = GameObject.FindGameObjectWithTag("_TriggerSword");
+        
+        
         lasergun = new HighTechGun(7f, GameObject.FindGameObjectWithTag("Lasergun"),
             false, 100f, 100);
         
@@ -128,7 +105,7 @@ public class Combat : MonoBehaviour
         shotgun = new SteamPunkGun(1f, GameObject.FindGameObjectWithTag("Shotgun"), false,
             12f, 50, 3f,  4);
         
-        flamethrower = new SteamPunkGun(0.25f, GameObject.FindGameObjectWithTag("Flamehrower"), false,
+        flamethrower = new SteamPunkGun(0.25f, GameObject.FindGameObjectWithTag("Flamethrower"), false,
             7f, 5, 3.5f,  100);
         
         disabledSword = new HighTechGun(1f, GameObject.FindGameObjectWithTag("DisabledSword"), false,
@@ -140,13 +117,13 @@ public class Combat : MonoBehaviour
         steamPunkSword = new HighTechGun(1f, GameObject.FindGameObjectWithTag("SteamPunkSword"), false,
             3f, 34);
         
-        List<HighTechGun> guns = new List<HighTechGun>{lasergun, pistol, shotgun, flamethrower, disabledSword, highTechSword, steamPunkSword};
+        loot = new List<GameObject>{_Pistol, _Lasergun, _Shotgun, _Flamethrower, _DisabledSword};
+        guns = new List<HighTechGun>{lasergun, pistol, shotgun, flamethrower, disabledSword, highTechSword, steamPunkSword};
     }
     
     void Update()
     {
         EchoInputs();
-        
         if ((Time.time > timeTemp + disabledSword.fireRate / 2f) && (timeTemp != -1f))
         {
             Destroy(prefabSphereMelee.gameObject);
@@ -164,22 +141,35 @@ public class Combat : MonoBehaviour
             fireDelayTemp--;
             Conecast(flamethrower);
         }
+        print(guns[0]);
         
         if (!(lasergun.isAvailable && pistol.isAvailable && shotgun.isAvailable && flamethrower.isAvailable &&
               disabledSword.isAvailable && highTechSword.isAvailable && steamPunkSword.isAvailable))
         {
-            foreach (var lootable in loot)
+            foreach (GameObject lootable in loot)
             {
                 if (Vector3.Distance(player.transform.position, lootable.transform.position) <= 1.5f)
                 {
                     foreach (HighTechGun gun in guns)
                     {
+                        //print(gun.gunObject.tag);
+                        print(lootable.tag);
                         if ((lootable.tag).Substring(1) == gun.gunObject.tag)
                         {
+                            loot.Remove(lootable);
                             gun.isAvailable = true;
+                            breakFlag = true;
+                            break;
+                            print("1111");
                         }
                     }
                     Destroy(lootable);
+                }
+
+                if (breakFlag)
+                {
+                    breakFlag = false;
+                    break;
                 }
             }
         }
@@ -206,19 +196,19 @@ public class Combat : MonoBehaviour
         {
             currentWeapon = 3;
             DisableAllWeapon();
-            guns[FindWeaponID()].gunObject.SetActive(true);
+            guns[FindWeaponID()].gunObject.GetComponent<MeshCollider>().enabled = true;
         }
         else if (Input.GetKeyDown(buttonToAdditionalWeapon) && (currentWeapon != 1) && (guns[FindWeaponID()].isAvailable) && !isReloading && (fireDelayTemp < 3))
         {
             currentWeapon = 1;
             DisableAllWeapon();
-            guns[FindWeaponID()].gunObject.SetActive(true);
+            guns[FindWeaponID()].gunObject.GetComponent<MeshCollider>().enabled = true;
         }
         else if (Input.GetKeyDown(buttonToSword) && (currentWeapon != 5) && (guns[FindWeaponID()].isAvailable) && !isReloading && (fireDelayTemp < 3))
         {
             currentWeapon = 5;
             DisableAllWeapon();
-            guns[FindWeaponID()].gunObject.SetActive(true);
+            guns[FindWeaponID()].gunObject.GetComponent<MeshCollider>().enabled = true;
         }
         
         if (Input.GetKeyDown(buttonToSwitchDimension))
@@ -233,7 +223,7 @@ public class Combat : MonoBehaviour
     {
         foreach (HighTechGun gun in guns)
         {
-            gun.gunObject.SetActive(false);
+            gun.gunObject.GetComponent<MeshCollider>().enabled = false;
         }
     }
     

@@ -5,6 +5,21 @@ TagManager:
   serializedVersion: 2
   tags:
   - Floor
+  - _Pistol
+  - _Shotgun
+  - _Lasergun
+  - _Flamethrower
+  - _TriggerSword
+  - Hand
+  - Pistol
+  - Shotgun
+  - Flamethrower
+  - Lasergun
+  - DisabledSword
+  - HighTechSword
+  - SteamPunkSword
+  - MeleeAttack
+  - _DisabledSword
   layers:
   - Default
   - TransparentFX
