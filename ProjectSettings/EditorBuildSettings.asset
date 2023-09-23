@@ -6,6 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/Menu.unity
+    guid: 328e0a18356414b47b7431508187927a
+  - enabled: 1
+    path: Assets/Scenes/NicosWorld.unity
+    guid: a23283944482450418e680cce48309da
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
