@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
     public GameObject _bullet;
     public Transform _spawnPoint;
+    public Transform _spawnPoint2;
 
+    public bool _isDroid;
+
+    [SerializeField] private Slider _slider;
+    [SerializeField] private int _maxHp;
     public int _hp;
+
+    [SerializeField] private int _deathShot;
 
     [SerializeField] private AudioSource _source;
     [SerializeField] private AudioClip[] _gun;
     [SerializeField] private AudioClip[] _deathSound;
+    [SerializeField] private GameObject _idleSound;
 
     [SerializeField] private float _speedBullet;
     [SerializeField] private float _fireRate;
@@ -25,6 +34,10 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        _deathShot = 0;
+        _hp = _maxHp;
+        _slider.maxValue = _maxHp;
+        _slider.value = _hp;
         _player = GameObject.FindWithTag("Player");
         _source = GetComponent<AudioSource>();
     }
@@ -32,11 +45,18 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        _slider.value = _hp;
 
-        if(_hp <= 0 )
+        if (_hp <= 0 )
         {
+            _idleSound.SetActive(false);
             _fireRate = 0;
+            _deathShot += 1;
             Destroy(this.box);
+            if (!_source.isPlaying && _deathShot <= 100)
+            {
+                _source.PlayOneShot(_deathSound[Random.Range(0, _deathSound.Length)]);
+            }
             GetComponent<Animator>().SetTrigger("Death");
             Death();
         }
@@ -46,23 +66,43 @@ public class Enemy : MonoBehaviour
         if (Time.time > _nextFireTime)
         {
             Fire();
+            _source.PlayOneShot(_gun[Random.Range(0, _gun.Length)]);
             _nextFireTime = Time.time + 1f / _fireRate;
         }
     }
 
     private void Fire()
     {
-        GetComponent<Animator>().SetTrigger("Fire");
-        _source.PlayOneShot(_gun[Random.Range(0, _gun.Length)]);
-        GameObject bullet = Instantiate(_bullet, _spawnPoint.position, Quaternion.identity);
-        Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
-        bulletRigidbody.velocity = (_player.transform.position - _spawnPoint.position).normalized * _speedBullet;
-        bulletRigidbody.useGravity = false;
+        if (!_isDroid)
+        {
+            GetComponent<Animator>().SetTrigger("Fire");
+            GameObject bullet = Instantiate(_bullet, _spawnPoint.position, Quaternion.identity);
+            Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
+            bulletRigidbody.velocity = (_player.transform.position - _spawnPoint.position).normalized * _speedBullet;
+            bulletRigidbody.useGravity = false;
+        }
+        else
+        {
+            GetComponent<Animator>().SetTrigger("Fire");
+            GameObject bullet = Instantiate(_bullet, _spawnPoint.position, Quaternion.identity);
+            GameObject bullet2 = Instantiate(_bullet, _spawnPoint2.position, Quaternion.identity);
+            Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
+            bulletRigidbody.velocity = (_player.transform.position - _spawnPoint.position).normalized * _speedBullet;
+            bulletRigidbody.useGravity = false;
+            Rigidbody bullet2Rigidbody = bullet2.GetComponent<Rigidbody>();
+            bullet2Rigidbody.velocity = (_player.transform.position - _spawnPoint2.position).normalized * _speedBullet;
+            bullet2Rigidbody.useGravity = false;
+        }
+    }
+
+    public void TakeDamage(int _damage)
+    {
+        _hp -= _damage;
+        _slider.value = _hp;
     }
 
     private void Death()
     {
-        _source.PlayOneShot(_deathSound[Random.Range(0, _deathSound.Length)]);
         Destroy(this.gameObject, _deathTime);
     }
 }

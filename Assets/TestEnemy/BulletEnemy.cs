@@ -9,10 +9,13 @@ public class BulletEnemy : MonoBehaviour
     [SerializeField] private float bulletLife;
     private GameObject _player;
 
+    [SerializeField] private int _damage;
+
     public void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "Player")
         {
+            collision.gameObject.GetComponent<PlayerMove>().TakeDamage(_damage);
             Destroy(this.gameObject);
         }
     }

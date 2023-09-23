@@ -1,28 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
-
-    public int _hp;
 
     [SerializeField] float _speed;
     [SerializeField] float DeploymentHeight;
     public GameObject _camera;
 
+    [SerializeField] private float _deathTime;
     [SerializeField] private float cx;
     [SerializeField] private float cy;
     [SerializeField] private float mouseSensivity;
 
+    [SerializeField] private Slider _healthBar;
+
+    [SerializeField] private int _maxHealth;
+    public int _health;
+    [SerializeField] private int _deathShot;
+
+
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip[] _footClip;
     [SerializeField] private AudioClip[] _deathClip;
+    [SerializeField] private AudioClip[] _takeHit;
 
     [SerializeField] private bool _canJump;
 
+
     void Start()
     {
+        _health = _maxHealth;
+        _healthBar.maxValue = _maxHealth;
+        _healthBar.value = _health;
         _audioSource = GetComponent<AudioSource>();
         _canJump = true;
         Cursor.visible = false;
@@ -38,14 +50,16 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        _healthBar.value = _health;
 
-        if (_hp <= 0)
+        if (_health <= 0)
         {
-            if (!_audioSource.isPlaying)
+            _deathShot += 1;
+            if (!_audioSource.isPlaying && _deathShot <= 100)
             {
                 _audioSource.PlayOneShot(_deathClip[0]);
             }
-            
+            Dead();
         }
 
         cx += Input.GetAxis("Mouse X") * mouseSensivity * Time.deltaTime;
@@ -92,6 +106,20 @@ public class PlayerMove : MonoBehaviour
             }
             transform.Translate(_speed * Time.deltaTime, 0, 0);
         }
+    }
+
+    public void Dead()
+    {
+        Destroy(this, _deathTime);
+    }
+
+    public void TakeDamage(int _damage)
+    {
+        if (!_audioSource.isPlaying)
+        {
+            _audioSource.PlayOneShot(_takeHit[Random.Range(0, _takeHit.Length)]);
+        }
+        _health -= _damage;
     }
 
     void Jump()
