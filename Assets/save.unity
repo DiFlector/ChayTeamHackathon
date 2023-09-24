@@ -571,7 +571,7 @@ GameObject:
   - component: {fileID: 410694705}
   m_Layer: 0
   m_Name: _DisabledSword
-  m_TagString: DisabledSword
+  m_TagString: _DisabledSword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1665,6 +1665,7 @@ MonoBehaviour:
   buttonToMainWeapon: 49
   buttonToAdditionalWeapon: 50
   buttonToSword: 51
+  loot: []
 --- !u!1 &2007041570
 GameObject:
   m_ObjectHideFlags: 0

@@ -32,6 +32,7 @@ public class Combat : MonoBehaviour
     public float timeTempReload = -1f;
     public int fireDelayTemp = -1;
     public bool breakFlag = false;
+    public bool canTravel = false;
     
     public MouseButton buttonToShoot = MouseButton.Left;
     public KeyCode buttonToSwitchDimension = KeyCode.Tab;
@@ -117,7 +118,7 @@ public class Combat : MonoBehaviour
             3f, 34);
         
         loot = new List<GameObject>{_Pistol, _Lasergun, _Shotgun, _Flamethrower, _DisabledSword};
-        guns = new List<HighTechGun>{lasergun, pistol, shotgun, flamethrower, disabledSword, highTechSword, steamPunkSword};
+        guns = new List<HighTechGun>{pistol, shotgun, lasergun, flamethrower, highTechSword, steamPunkSword, disabledSword};
     }
     
     void Update()
@@ -141,7 +142,16 @@ public class Combat : MonoBehaviour
             Conecast(flamethrower);
         }
         print(guns[0]);
-        
+
+        if ((!canTravel && !disabledSword.isAvailable) && (Vector3.Distance(player.transform.position, _TriggerSword.transform.position) <= 1.5f))
+        {
+            canTravel = true;
+            disabledSword.isAvailable = false;
+            DisableAllWeapon();
+            highTechSword.isAvailable = true;
+            steamPunkSword.isAvailable = true;
+        }
+            
         if (!(lasergun.isAvailable && pistol.isAvailable && shotgun.isAvailable && flamethrower.isAvailable &&
               highTechSword.isAvailable && steamPunkSword.isAvailable))
         {
@@ -156,8 +166,10 @@ public class Combat : MonoBehaviour
                             loot.Remove(lootable);
                             gun.isAvailable = true;
                             breakFlag = true;
+                            
+                            if (gun == disabledSword)
+                            
                             break;
-                            print("1111");
                         }
                     }
                     Destroy(lootable);
@@ -189,6 +201,7 @@ public class Combat : MonoBehaviour
     
     void EchoInputs()
     {
+        print(guns[FindWeaponID()].gunObject.tag);
         if (Input.GetKeyDown(buttonToMainWeapon) && (currentWeapon != 3) && (guns[FindWeaponID()].isAvailable) && !isReloading && (fireDelayTemp < 3))
         {
             currentWeapon = 3;
@@ -207,9 +220,10 @@ public class Combat : MonoBehaviour
             DisableAllWeapon();
             guns[FindWeaponID()].gunObject.GetComponent<MeshRenderer>().enabled = true;
         }
-        
-        if (Input.GetKeyDown(buttonToSwitchDimension))
+
+        if (Input.GetKeyDown(buttonToSwitchDimension) && canTravel)
             SwitchDimension();
+            
         
         if (Input.GetMouseButtonDown((int)buttonToShoot))
             if (!isReloading) Shoot();
@@ -220,6 +234,7 @@ public class Combat : MonoBehaviour
     {
         foreach (HighTechGun gun in guns)
         {
+            print(gun.gunObject.tag);
             gun.gunObject.GetComponent<MeshRenderer>().enabled = false;
         }
     }
@@ -343,7 +358,29 @@ public class Combat : MonoBehaviour
     
     int FindWeaponID()
     {
-        return currentWeapon * dimension;
+        switch (currentWeapon * dimension) // Сам разбирайся в этой магии, если ты сюда залез xD
+        {
+            case 1: //пистолет
+                return 0;
+
+            case 2: //дробовик
+                return 1;
+
+            case 3: //лазерган
+                return 2;
+
+            case 6: //огнемет
+                return 3;
+
+            case 5: //HT меч (или выключенный)
+                return 4;
+
+            case 10: //SP меч
+                return 5;
+            
+            default:
+                return 6;
+        }
     }
 
     void SwitchDimension()
