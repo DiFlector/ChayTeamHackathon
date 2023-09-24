@@ -14,13 +14,10 @@ public class Player : MonoBehaviour
     public int _health;
     [SerializeField] private int _deathShot;
 
-    [SerializeField] private PlayerMove playerMove;
+
     [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private AudioClip _footClip;
-    [SerializeField] private AudioClip _flyClip;
-    [SerializeField] private AudioClip _releaseClip;
-    [SerializeField] private AudioClip _grabClip;
-    [SerializeField] private AudioClip _deathClip;
+    [SerializeField] private AudioClip[] _footClip;
+    [SerializeField] private AudioClip[] _deathClip;
     [SerializeField] private AudioClip[] _takeHit;
 
 
@@ -44,33 +41,29 @@ public class Player : MonoBehaviour
             _deathShot += 1;
             if (!_audioSource.isPlaying && _deathShot <= 100)
             {
-                _audioSource.PlayOneShot(_deathClip);
+                _audioSource.PlayOneShot(_deathClip[0]);
             }
             Dead();
         }
 
-        switch (playerMove.state)
+
+         if(!_audioSource.isPlaying)
+         {
+            _audioSource.PlayOneShot(_footClip[0]);
+         }
+
+        if (!_audioSource.isPlaying)
         {
-            case States.walking:
-            {
-                _audioSource.PlayOneShot(_footClip);
-                break;
-            }
-            case States.flying:
-            {
-                _audioSource.PlayOneShot(_flyClip);
-                break;
-            }
-            case States.releasing:
-            {
-                _audioSource.PlayOneShot(_releaseClip);
-                break;
-            }
-            case States.grappling:
-            {
-                _audioSource.PlayOneShot(_grabClip);
-                break;
-            }
+            _audioSource.PlayOneShot(_footClip[0]);
+        }
+        if (!_audioSource.isPlaying)
+        {
+            _audioSource.PlayOneShot(_footClip[0]);
+        }
+
+        if (!_audioSource.isPlaying)
+        {
+            _audioSource.PlayOneShot(_footClip[0]);
         }
     }
 
