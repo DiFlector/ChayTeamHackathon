@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -91,7 +92,7 @@ public class Player : MonoBehaviour
 
     public void Dead()
     {
-        Destroy(this, _deathTime);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void TakeDamage(int _damage)

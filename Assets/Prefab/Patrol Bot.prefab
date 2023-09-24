@@ -78,7 +78,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2336812087612082782
 Transform:
   m_ObjectHideFlags: 0
@@ -622,6 +622,7 @@ MonoBehaviour:
   _deathTime: 4
   _range: 35
   box: {fileID: 6769513053095373899}
+  anima: {fileID: 0}
 --- !u!82 &4025783329246861218
 AudioSource:
   m_ObjectHideFlags: 0

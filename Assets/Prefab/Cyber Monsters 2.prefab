@@ -3263,7 +3263,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5707788546165418913
 Transform:
   m_ObjectHideFlags: 0
@@ -3670,7 +3670,7 @@ MonoBehaviour:
   _maxHp: 100
   _hp: 100
   _deathShot: 0
-  _source: {fileID: 7423052345951004782}
+  _source: {fileID: 0}
   _gun:
   - {fileID: 8300000, guid: 04c2a71725b25a94799c11b9be249296, type: 3}
   _deathSound:
@@ -3684,6 +3684,7 @@ MonoBehaviour:
   _deathTime: 4
   _range: 35
   box: {fileID: 4325673343739338021}
+  anima: {fileID: 0}
 --- !u!82 &7423052345951004782
 AudioSource:
   m_ObjectHideFlags: 0

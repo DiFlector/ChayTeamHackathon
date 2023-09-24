@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4748737888232129150}
   - component: {fileID: 8580765230310664430}
   - component: {fileID: 7754949881774387947}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 3748663671981417133}
   - component: {fileID: 1799293584908636676}
   - component: {fileID: 7236475691806141991}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4959,9 +4959,10 @@ GameObject:
   - component: {fileID: 2671243857892779853}
   - component: {fileID: 6772257792722008813}
   - component: {fileID: 7703292980997018873}
+  - component: {fileID: 8429194614780053920}
   - component: {fileID: 525741981156313629}
   - component: {fileID: 623070496529038113}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Portal
   m_TagString: Portal
   m_Icon: {fileID: 0}
@@ -5038,6 +5039,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8429194614780053920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8366679372488320315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4084b9716567d14dac918ce67d24112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneID: 0
 --- !u!64 &525741981156313629
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5106,6 +5120,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 496487244642044104, guid: effb650189dc5714e9e9801b1cfb3991,
         type: 3}
+      propertyPath: m_Layer
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 496487244642044104, guid: effb650189dc5714e9e9801b1cfb3991,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -5121,8 +5140,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 496487245117367874, guid: effb650189dc5714e9e9801b1cfb3991,
         type: 3}
+      propertyPath: m_Layer
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 496487245117367874, guid: effb650189dc5714e9e9801b1cfb3991,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566140890059193891, guid: effb650189dc5714e9e9801b1cfb3991,
+        type: 3}
+      propertyPath: m_Layer
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 6566140890059193891, guid: effb650189dc5714e9e9801b1cfb3991,
         type: 3}
@@ -5298,6 +5327,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CFXR Electrified 3 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9027514048236820045, guid: effb650189dc5714e9e9801b1cfb3991,
+        type: 3}
+      propertyPath: m_Layer
+      value: 19
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6747932735989160330, guid: effb650189dc5714e9e9801b1cfb3991, type: 3}

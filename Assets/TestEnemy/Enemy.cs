@@ -124,6 +124,6 @@ public class Enemy : MonoBehaviour
 
     private void Death()
     {
-        Destroy(this.gameObject, _deathTime);
+        Destroy(this.gameObject);
     }
 }

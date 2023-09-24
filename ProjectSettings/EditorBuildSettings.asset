@@ -9,7 +9,16 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 328e0a18356414b47b7431508187927a
   - enabled: 1
-    path: Assets/Scenes/NicosWorld.unity
-    guid: a23283944482450418e680cce48309da
+    path: Assets/Scenes/level0.unity
+    guid: b848b40775479cb4d9c34cbce2ee781e
+  - enabled: 1
+    path: Assets/Scenes/level1.unity
+    guid: ae303d4d7ba05254b833d98db8a02af6
+  - enabled: 1
+    path: Assets/Scenes/level2.unity
+    guid: 51ce4dd0a845b6545b342406920f85d3
+  - enabled: 1
+    path: Assets/Scenes/win.unity
+    guid: c388e07d403a62e44a8cafffbb8e42ca
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
