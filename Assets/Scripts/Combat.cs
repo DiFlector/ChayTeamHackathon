@@ -26,7 +26,6 @@ public class Combat : MonoBehaviour
     public int dimension = 1;
     public bool isDimensionChanged = false;
     public float lastTravelTime = -1f;
-    public float timeTemp = -1f;
     public bool isReloading = false;
     public float timeTempReload = -1f;
     public int fireDelayTemp = -1;
@@ -125,11 +124,6 @@ public class Combat : MonoBehaviour
     void Update()
     {
         EchoInputs();
-        if ((Time.time > timeTemp + disabledSword.fireRate / 2f) && (timeTemp != -1f))
-        {
-            Destroy(sphereMelee);
-            timeTemp = -1f;
-        }
 
         if (isFireReloading && (Time.time > flamethrower.lastFireTime + 0.1f) && (flamethrower.ammo < 100))
         {
@@ -313,7 +307,7 @@ public class Combat : MonoBehaviour
             JustSpherecast();
             return true;
         }
-        if (Time.time > gunObject.lastFireTime + gunObject.fireRate)
+        else if (Time.time > gunObject.lastFireTime + gunObject.fireRate)
         {
             print("sweng");
             JustSpherecast();
@@ -327,7 +321,15 @@ public class Combat : MonoBehaviour
         Vector3 spawnPosition = player.transform.position + player.transform.forward * 0.5f;
         sphereMelee = Instantiate(prefabSphereMelee, spawnPosition, Quaternion.identity);
         sphereMelee.transform.SetParent(player.transform);
-        timeTemp = Time.time;
+        
+        
+        StartCoroutine(DelayCoroutine());
+    }
+    
+    IEnumerator DelayCoroutine()
+    {
+        yield return new WaitForSeconds(0.01f);
+        Destroy(sphereMelee); 
     }
 
     bool HighTechAttack(HighTechGun gunObject)
