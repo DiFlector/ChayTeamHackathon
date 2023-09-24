@@ -18,11 +18,15 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private LineRenderer rope;
 
     public States state;
+    private Vector3 lastPos;
+    private Vector3 currentPos;
+    [SerializeField] private float jetpackReloadSpeed;
     [SerializeField] private float climbSpeed;
     private Rigidbody rb;
     private float releaseTimer;
     private float cooldownTimer;
     private float collisionCount;
+    private List<GameObject> collisionList;
     [SerializeField] private float cooldownTime;
     [SerializeField] private float jumpPower;
     [SerializeField] private float jetpackPower;
@@ -44,13 +48,14 @@ public class PlayerMove : MonoBehaviour
     void Start()
     {
         collisionCount = 0;
+        collisionList = new List<GameObject>();
         cooldownTimer = Time.realtimeSinceStartup - cooldownTime;
         rb = GetComponent<Rigidbody>();
         hookGrabbed = false;
         hookActive = false;
         wasGrabbed = false;
         currentSpeed = Vector3.zero;
-        _canJump = true;
+        _canJump = false;
         jetpackFuel = maxFuel;
         Cursor.visible = false;
     }
@@ -61,16 +66,25 @@ public class PlayerMove : MonoBehaviour
         {
             _canJump = true;
             collisionCount += 1;
+            collisionList.Add(collision.gameObject);
+            currentPos = collisionList[0].transform.position;
+            lastPos = currentPos;
         }
     }
 
     void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.tag == "Floor" && collisionCount == 1)
+        if (collision.gameObject.tag == "Floor")
         {
-            _canJump = false;
+            if (collisionCount == 1)
+            {
+                _canJump = false;
+            }
+            collisionCount -= 1;
+            collisionList.RemoveAt(0);
+            currentPos = collisionList[0].transform.position;
+            lastPos = currentPos;
         }
-        collisionCount -= 1;
     }
 
     void Update()
@@ -81,6 +95,7 @@ public class PlayerMove : MonoBehaviour
         cy = Mathf.Clamp(cy, -90, 90);
         _camera.transform.rotation = Quaternion.Euler(cy, cx, 0);
 
+        print($"{_canJump}, {collisionCount}");
         if (Input.GetKey(KeyCode.Space))
         {
             if (_canJump)
@@ -91,6 +106,9 @@ public class PlayerMove : MonoBehaviour
 
         if (_canJump)
         {
+            currentPos = collisionList[0].transform.position;
+            gameObject.transform.position += currentPos - lastPos;
+            lastPos = currentPos;
             currentSpeed = Vector3.zero;
             if (Input.GetKey(KeyCode.W))
             {
@@ -122,7 +140,7 @@ public class PlayerMove : MonoBehaviour
             }
             if (jetpackFuel < maxFuel)
             {
-                jetpackFuel += Time.deltaTime;
+                jetpackFuel += Time.deltaTime * jetpackReloadSpeed;
             }
         }
         else
@@ -178,7 +196,7 @@ public class PlayerMove : MonoBehaviour
                 //print($"{hookMaxLenght}, {hookLenght}, {(hook.transform.position - gameObject.transform.position).magnitude}, {_canJump}, {collisionCount}");
                 if ((hook.transform.position - gameObject.transform.position).magnitude >= hookLenght)
                 {
-                    rb.velocity += (hook.transform.position + (gameObject.transform.position - hook.transform.position).normalized * hookLenght - gameObject.transform.position) * 0.25f;
+                    rb.velocity += Vector3.Slerp((hook.transform.position + (gameObject.transform.position - hook.transform.position).normalized * hookLenght - gameObject.transform.position), rb.GetPointVelocity(Vector3.zero), 0.05f) * 0.25f;
                 }
             }
             if (Input.GetMouseButtonDown(1) && Time.realtimeSinceStartup - releaseTimer > 1)
@@ -209,22 +227,26 @@ public class PlayerMove : MonoBehaviour
             currentSpeed = Vector3.zero;
             if (Input.GetKey(KeyCode.W))
             {
-                currentSpeed += new Vector3(Mathf.Sin(Mathf.Deg2Rad * transform.rotation.eulerAngles.y), 0, Mathf.Cos(Mathf.Deg2Rad * transform.rotation.eulerAngles.y));
+                //currentSpeed += new Vector3(Mathf.Sin(Mathf.Deg2Rad * transform.rotation.eulerAngles.y), 0, Mathf.Cos(Mathf.Deg2Rad * transform.rotation.eulerAngles.y));
+                rb.AddForce(_camera.transform.forward.x * jetpackHorizontalPower * Time.deltaTime, 0, _camera.transform.forward.z * jetpackHorizontalPower * Time.deltaTime, ForceMode.Impulse);
                 jetpackFuel -= 5 * Time.deltaTime;
             }
             if (Input.GetKey(KeyCode.S))
             {
-                currentSpeed -= new Vector3(Mathf.Sin(Mathf.Deg2Rad * transform.rotation.eulerAngles.y), 0, Mathf.Cos(Mathf.Deg2Rad * transform.rotation.eulerAngles.y));
+                //currentSpeed -= new Vector3(Mathf.Sin(Mathf.Deg2Rad * transform.rotation.eulerAngles.y), 0, Mathf.Cos(Mathf.Deg2Rad * transform.rotation.eulerAngles.y));
+                rb.AddForce(-_camera.transform.forward.x * jetpackHorizontalPower * Time.deltaTime, 0, -_camera.transform.forward.z * jetpackHorizontalPower * Time.deltaTime, ForceMode.Impulse);
                 jetpackFuel -= 5 * Time.deltaTime;
             }
             if (Input.GetKey(KeyCode.A))
             {
-                currentSpeed -= new Vector3(Mathf.Sin(Mathf.Deg2Rad * (90 + transform.rotation.eulerAngles.y)), 0, Mathf.Cos(Mathf.Deg2Rad * (90 + transform.rotation.eulerAngles.y)));
+                //currentSpeed -= new Vector3(Mathf.Sin(Mathf.Deg2Rad * (90 + transform.rotation.eulerAngles.y)), 0, Mathf.Cos(Mathf.Deg2Rad * (90 + transform.rotation.eulerAngles.y)));
+                rb.AddForce(_camera.transform.forward.z * jetpackHorizontalPower * Time.deltaTime, 0, _camera.transform.forward.x * jetpackHorizontalPower * Time.deltaTime, ForceMode.Impulse);
                 jetpackFuel -= 5 * Time.deltaTime;
             }
             if (Input.GetKey(KeyCode.D))
             {
-                currentSpeed += new Vector3(Mathf.Sin(Mathf.Deg2Rad * (90 + transform.rotation.eulerAngles.y)), 0, Mathf.Cos(Mathf.Deg2Rad * (90 + transform.rotation.eulerAngles.y)));
+                //currentSpeed += new Vector3(Mathf.Sin(Mathf.Deg2Rad * (90 + transform.rotation.eulerAngles.y)), 0, Mathf.Cos(Mathf.Deg2Rad * (90 + transform.rotation.eulerAngles.y)));
+                rb.AddForce(-_camera.transform.forward.z * jetpackHorizontalPower * Time.deltaTime, 0, -_camera.transform.forward.x * jetpackHorizontalPower * Time.deltaTime, ForceMode.Impulse);
                 jetpackFuel -= 5 * Time.deltaTime;
             }
             currentSpeed = jetpackHorizontalPower * currentSpeed.normalized;
