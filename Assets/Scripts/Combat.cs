@@ -21,7 +21,6 @@ public class Combat : MonoBehaviour
     
     private Transform spawnPointSphereMelee;
     
-    public string enemyTag = "Enemy";
     public int currentWeapon = 0;
     public int previousWeapon = 0;
     public int dimension = 1;
@@ -33,6 +32,7 @@ public class Combat : MonoBehaviour
     public int fireDelayTemp = -1;
     public bool breakFlag = false;
     public bool canTravel = false;
+    public bool isUnarmed = true;
     
     public MouseButton buttonToShoot = MouseButton.Left;
     public KeyCode buttonToSwitchDimension = KeyCode.Tab;
@@ -141,15 +141,18 @@ public class Combat : MonoBehaviour
             fireDelayTemp--;
             Conecast(flamethrower);
         }
-        print(guns[0]);
-
-        if ((!canTravel && !disabledSword.isAvailable) && (Vector3.Distance(player.transform.position, _TriggerSword.transform.position) <= 1.5f))
+        
+        if ((!canTravel && disabledSword.isAvailable) && (Vector3.Distance(player.transform.position, _TriggerSword.transform.position) <= 1.5f))
         {
             canTravel = true;
             disabledSword.isAvailable = false;
             DisableAllWeapon();
+            currentWeapon = 5;
             highTechSword.isAvailable = true;
             steamPunkSword.isAvailable = true;
+            highTechSword.gunObject.GetComponent<MeshRenderer>().enabled = true;
+            Destroy(_TriggerSword);
+            print("switched to sword with ability");
         }
             
         if (!(lasergun.isAvailable && pistol.isAvailable && shotgun.isAvailable && flamethrower.isAvailable &&
@@ -166,8 +169,17 @@ public class Combat : MonoBehaviour
                             loot.Remove(lootable);
                             gun.isAvailable = true;
                             breakFlag = true;
-                            
+
                             if (gun == disabledSword)
+                            {
+                                isUnarmed = false;
+                                currentWeapon = 0;
+                                DisableAllWeapon();
+                                disabledSword.gunObject.GetComponent<MeshRenderer>().enabled = true;
+                                print($"Using {guns[FindWeaponID()].gunObject.tag}");
+                            }
+                            
+                            print($"{gun.gunObject.tag} naw awlbl");
                             
                             break;
                         }
@@ -201,32 +213,40 @@ public class Combat : MonoBehaviour
     
     void EchoInputs()
     {
-        print(guns[FindWeaponID()].gunObject.tag);
-        if (Input.GetKeyDown(buttonToMainWeapon) && (currentWeapon != 3) && (guns[FindWeaponID()].isAvailable) && !isReloading && (fireDelayTemp < 3))
+        if (Input.GetKeyDown(buttonToMainWeapon) && (currentWeapon != 3) && (guns[FindWeaponID(3)].isAvailable) && !isReloading && (fireDelayTemp < 3))
         {
             currentWeapon = 3;
             DisableAllWeapon();
             guns[FindWeaponID()].gunObject.GetComponent<MeshRenderer>().enabled = true;
+            print($"Using {guns[FindWeaponID()].gunObject.tag}");
         }
-        else if (Input.GetKeyDown(buttonToAdditionalWeapon) && (currentWeapon != 1) && (guns[FindWeaponID()].isAvailable) && !isReloading && (fireDelayTemp < 3))
+        else if (Input.GetKeyDown(buttonToAdditionalWeapon) && (currentWeapon != 1) && (guns[FindWeaponID(1)].isAvailable) && !isReloading && (fireDelayTemp < 3))
         {
             currentWeapon = 1;
             DisableAllWeapon();
             guns[FindWeaponID()].gunObject.GetComponent<MeshRenderer>().enabled = true;
+            print($"Using {guns[FindWeaponID()].gunObject.tag}");
         }
-        else if (Input.GetKeyDown(buttonToSword) && (currentWeapon != 5) && (guns[FindWeaponID()].isAvailable) && !isReloading && (fireDelayTemp < 3))
+        else if (Input.GetKeyDown(buttonToSword) && (currentWeapon != 5) && (guns[FindWeaponID(5)].isAvailable) && !isReloading && (fireDelayTemp < 3))
         {
             currentWeapon = 5;
             DisableAllWeapon();
             guns[FindWeaponID()].gunObject.GetComponent<MeshRenderer>().enabled = true;
+            print($"Using {guns[FindWeaponID()].gunObject.tag}");
+        }
+        else if (Input.GetKeyDown(buttonToSword) && (currentWeapon != 0) && (guns[FindWeaponID(0)].isAvailable) && !isReloading && (fireDelayTemp < 3))
+        {
+            currentWeapon = 0;
+            DisableAllWeapon();
+            guns[FindWeaponID()].gunObject.GetComponent<MeshRenderer>().enabled = true;
+            print($"Using {guns[FindWeaponID()].gunObject.tag}");
         }
 
         if (Input.GetKeyDown(buttonToSwitchDimension) && canTravel)
             SwitchDimension();
-            
         
         if (Input.GetMouseButtonDown((int)buttonToShoot))
-            if (!isReloading) Shoot();
+            if (!isReloading && !isUnarmed) Shoot();
         
     }
 
@@ -234,36 +254,36 @@ public class Combat : MonoBehaviour
     {
         foreach (HighTechGun gun in guns)
         {
-            print(gun.gunObject.tag);
             gun.gunObject.GetComponent<MeshRenderer>().enabled = false;
         }
+        print("Выключны все ганы");
     }
     
     void Shoot()
     {
         switch (FindWeaponID())    // Сам разбирайся в этой магии, если ты сюда залез xD
         {
-            case 1: //пистолет
+            case 0: //пистолет
                 if (HighTechAttack(pistol)); //проверки для звука атаки и эффектов
                 break;
             
-            case 2: //дробовик
+            case 1: //дробовик
                 if (SteamPunkAttack(shotgun));
                 break;
             
-            case 3: //лазерган
+            case 2: //лазерган
                 if (HighTechAttack(lasergun));
                 break;
             
-            case 6: //огнемет
+            case 3: //огнемет
                 if (SteamPunkAttack(flamethrower));
                 break;
             
-            case 5: //HT меч (или выключенный)
+            case 4: //HT меч (или выключенный)
                 if (SwordAttack(highTechSword));
                 break;
             
-            case 10: //SP меч
+            case 5: //SP меч
                 if (SwordAttack(steamPunkSword));
                 break;
         }
@@ -302,7 +322,7 @@ public class Combat : MonoBehaviour
                     
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, gunObject.distance) && hit.collider.CompareTag(enemyTag))
+            if (Physics.Raycast(ray, out hit, gunObject.distance) && hit.collider.CompareTag("Enemy"))
             {
                 
             }
@@ -349,7 +369,7 @@ public class Combat : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
-            if (hit.collider.CompareTag(enemyTag))
+            if (hit.collider.CompareTag("Enemy"))
             {
 
             }
@@ -372,13 +392,40 @@ public class Combat : MonoBehaviour
             case 6: //огнемет
                 return 3;
 
-            case 5: //HT меч (или выключенный)
+            case 5: //HT меч
                 return 4;
 
             case 10: //SP меч
                 return 5;
             
-            default:
+            default: //Dbl меч
+                return 6;
+        }
+    }
+    
+    int FindWeaponID(int value)
+    {
+        switch (value * dimension) // Сам разбирайся в этой магии, если ты сюда залез xD
+        {
+            case 1: //пистолет
+                return 0;
+
+            case 2: //дробовик
+                return 1;
+
+            case 3: //лазерган
+                return 2;
+
+            case 6: //огнемет
+                return 3;
+
+            case 5: //HT меч
+                return 4;
+
+            case 10: //SP меч
+                return 5;
+            
+            default: //Dbl меч
                 return 6;
         }
     }
