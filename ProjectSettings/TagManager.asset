@@ -6,6 +6,21 @@ TagManager:
   tags:
   - Floor
   - Portal
+  - _Pistol
+  - _Shotgun
+  - _Lasergun
+  - _Flamethrower
+  - _TriggerSword
+  - Hand
+  - Pistol
+  - Shotgun
+  - Flamethrower
+  - Lasergun
+  - DisabledSword
+  - HighTechSword
+  - SteamPunkSword
+  - MeleeAttack
+  - _DisabledSword
   - Enemy
   layers:
   - Default
