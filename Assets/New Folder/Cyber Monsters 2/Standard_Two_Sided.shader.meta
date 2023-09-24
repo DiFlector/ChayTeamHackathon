@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 3165f111c4913a143888f553a58088a4
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 161380
+  packageName: Cyber Monsters 2
+  packageVersion: 1.0
+  assetPath: Assets/Cyber Monsters 2/Standard_Two_Sided.shader
+  uploadId: 350535
