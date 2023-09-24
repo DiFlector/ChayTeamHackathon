@@ -53,34 +53,22 @@ public class Player : MonoBehaviour
         {
             case States.walking:
             {
-                if (!_audioSource.isPlaying)
-                {
-                    _audioSource.PlayOneShot(_footClip);
-                }
+                _audioSource.PlayOneShot(_footClip);
                 break;
             }
             case States.flying:
             {
-                if (!_audioSource.isPlaying)
-                {
-                    _audioSource.PlayOneShot(_flyClip);
-                }
+                _audioSource.PlayOneShot(_flyClip);
                 break;
             }
             case States.releasing:
             {
-                if (!_audioSource.isPlaying)
-                {
-                    _audioSource.PlayOneShot(_releaseClip);
-                }
+                _audioSource.PlayOneShot(_releaseClip);
                 break;
             }
             case States.grappling:
             {
-                if (!_audioSource.isPlaying)
-                {
-                    _audioSource.PlayOneShot(_grabClip);
-                }
+                _audioSource.PlayOneShot(_grabClip);
                 break;
             }
         }
