@@ -8437,10 +8437,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cyber Monsters 2 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4383118842099503473, guid: f34a0c87cd6325b42b3ac5d9408e5e8f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5534124578872907452, guid: f34a0c87cd6325b42b3ac5d9408e5e8f,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7363566321294085167, guid: f34a0c87cd6325b42b3ac5d9408e5e8f,
         type: 3}
@@ -9905,10 +9910,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cyber Monsters 2 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4383118842099503473, guid: f34a0c87cd6325b42b3ac5d9408e5e8f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5534124578872907452, guid: f34a0c87cd6325b42b3ac5d9408e5e8f,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7363566321294085167, guid: f34a0c87cd6325b42b3ac5d9408e5e8f,
         type: 3}
@@ -20644,6 +20654,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Connected Computer (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1931886439230648, guid: 8f0250ba2b1b4e8418caf4aa132dd277, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4195153059930162, guid: 8f0250ba2b1b4e8418caf4aa132dd277, type: 3}
       propertyPath: m_LocalScale.x
       value: 4
@@ -30005,6 +30019,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: crate_19 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 142334, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 462418, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
       propertyPath: m_RootOrder
       value: 90
@@ -34964,7 +34982,7 @@ PrefabInstance:
     - target: {fileID: 5534124578872907452, guid: f34a0c87cd6325b42b3ac5d9408e5e8f,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7363566321294085167, guid: f34a0c87cd6325b42b3ac5d9408e5e8f,
         type: 3}
@@ -36866,6 +36884,10 @@ PrefabInstance:
     - target: {fileID: 142334, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
       propertyPath: m_Name
       value: crate_12 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 142334, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 462418, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
       propertyPath: m_RootOrder
@@ -38859,6 +38881,10 @@ PrefabInstance:
     - target: {fileID: 1193185885239410, guid: a31cc91b37ebdf647bbd06ff06140003, type: 3}
       propertyPath: m_Name
       value: Computer2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1193185885239410, guid: a31cc91b37ebdf647bbd06ff06140003, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4505710698196264, guid: a31cc91b37ebdf647bbd06ff06140003, type: 3}
       propertyPath: m_LocalScale.x
@@ -42898,6 +42924,10 @@ PrefabInstance:
     - target: {fileID: 1193185885239410, guid: a31cc91b37ebdf647bbd06ff06140003, type: 3}
       propertyPath: m_Name
       value: Computer2 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1193185885239410, guid: a31cc91b37ebdf647bbd06ff06140003, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4505710698196264, guid: a31cc91b37ebdf647bbd06ff06140003, type: 3}
       propertyPath: m_LocalScale.x
@@ -50374,6 +50404,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Computer2
       objectReference: {fileID: 0}
+    - target: {fileID: 1193185885239410, guid: a31cc91b37ebdf647bbd06ff06140003, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4505710698196264, guid: a31cc91b37ebdf647bbd06ff06140003, type: 3}
       propertyPath: m_LocalScale.x
       value: 4.5
@@ -50452,6 +50486,10 @@ PrefabInstance:
     - target: {fileID: 1931886439230648, guid: 8f0250ba2b1b4e8418caf4aa132dd277, type: 3}
       propertyPath: m_Name
       value: Connected Computer (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1931886439230648, guid: 8f0250ba2b1b4e8418caf4aa132dd277, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4195153059930162, guid: 8f0250ba2b1b4e8418caf4aa132dd277, type: 3}
       propertyPath: m_LocalScale.x
@@ -53560,7 +53598,7 @@ PrefabInstance:
     - target: {fileID: 4583353882276943153, guid: bf80d37b2e9791d45a09cd658c4d017d,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8417702913705896711, guid: bf80d37b2e9791d45a09cd658c4d017d,
         type: 3}
@@ -57814,7 +57852,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 142334, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 462418, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
       propertyPath: m_RootOrder
@@ -59623,7 +59661,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1935413681
 Transform:
   m_ObjectHideFlags: 0
@@ -61192,6 +61230,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: crate_12 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 142334, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 462418, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
       propertyPath: m_RootOrder
       value: 229
@@ -61798,7 +61840,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 142334, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 462418, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
       propertyPath: m_RootOrder
@@ -63422,6 +63464,10 @@ PrefabInstance:
     - target: {fileID: 142334, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
       propertyPath: m_Name
       value: crate_12 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 142334, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 462418, guid: 9f35541b213a65340a8e088b7f3ab551, type: 3}
       propertyPath: m_RootOrder
@@ -65264,6 +65310,10 @@ PrefabInstance:
     - target: {fileID: 1931886439230648, guid: 8f0250ba2b1b4e8418caf4aa132dd277, type: 3}
       propertyPath: m_Name
       value: Connected Computer
+      objectReference: {fileID: 0}
+    - target: {fileID: 1931886439230648, guid: 8f0250ba2b1b4e8418caf4aa132dd277, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4195153059930162, guid: 8f0250ba2b1b4e8418caf4aa132dd277, type: 3}
       propertyPath: m_LocalScale.x
@@ -67515,7 +67565,7 @@ PrefabInstance:
     - target: {fileID: 8429194614780053920, guid: e8ab2dc316756134eaa5b397c7c6ba5a,
         type: 3}
       propertyPath: sceneID
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
