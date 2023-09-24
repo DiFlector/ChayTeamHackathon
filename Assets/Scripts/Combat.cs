@@ -11,6 +11,8 @@ public class Combat : MonoBehaviour
 {
     public GameObject player;
     public GameObject prefabSphereMelee;
+    public GameObject hand;
+    public GameObject sphereMelee;
 
     public static GameObject _Pistol;
     public static GameObject _Lasergun;
@@ -18,8 +20,6 @@ public class Combat : MonoBehaviour
     public static GameObject _Flamethrower;
     public static GameObject _DisabledSword;
     public static GameObject _TriggerSword;
-    
-    private Transform spawnPointSphereMelee;
     
     public int currentWeapon = 0;
     public int previousWeapon = 0;
@@ -33,6 +33,7 @@ public class Combat : MonoBehaviour
     public bool breakFlag = false;
     public bool canTravel = false;
     public bool isUnarmed = true;
+    public bool isFireReloading = false;
     
     public MouseButton buttonToShoot = MouseButton.Left;
     public KeyCode buttonToSwitchDimension = KeyCode.Tab;
@@ -86,7 +87,7 @@ public class Combat : MonoBehaviour
     {
         
         player = GameObject.FindGameObjectWithTag("Player");
-        //hand = GameObject.FindGameObjectWithTag("Hand");
+        hand = GameObject.FindGameObjectWithTag("Hand");
         
         _Pistol = GameObject.FindGameObjectWithTag("_Pistol");
         _Lasergun = GameObject.FindGameObjectWithTag("_Lasergun");
@@ -126,14 +127,26 @@ public class Combat : MonoBehaviour
         EchoInputs();
         if ((Time.time > timeTemp + disabledSword.fireRate / 2f) && (timeTemp != -1f))
         {
-            Destroy(prefabSphereMelee.gameObject);
+            Destroy(sphereMelee);
             timeTemp = -1f;
         }
 
-        if ((Time.time > timeTempReload + 2f) && (timeTemp != -1f))
+        if (isFireReloading && (Time.time > flamethrower.lastFireTime + 0.1f) && (flamethrower.ammo < 100))
+        {
+            flamethrower.ammo++;
+            flamethrower.lastFireTime = Time.time;
+            print($"ammo now {flamethrower.ammo}");
+        }
+        if (isFireReloading && (flamethrower.ammo >= 100))
+        {
+            isFireReloading = false;
+        }
+        
+        if ((Time.time > timeTempReload + 2f) && (timeTempReload != -1f))
         {
             timeTempReload = -1f;
             isReloading = false;
+            shotgun.ammo = 4;
         }
 
         if ((fireDelayTemp > -1) && (Time.time >= 0.1f + flamethrower.lastFireTime))
@@ -268,39 +281,42 @@ public class Combat : MonoBehaviour
                 break;
             
             case 1: //дробовик
-                if (SteamPunkAttack(shotgun));
+                if (SteamPunkAttack(shotgun)) ;
                 break;
             
             case 2: //лазерган
-                if (HighTechAttack(lasergun));
+                if (HighTechAttack(lasergun)) ;
                 break;
             
             case 3: //огнемет
-                if (SteamPunkAttack(flamethrower));
+                if (SteamPunkAttack(flamethrower)) ;
                 break;
             
-            case 4: //HT меч (или выключенный)
-                if (SwordAttack(highTechSword));
+            case 4: //HT меч
+                if (SwordAttack(highTechSword)) ;
                 break;
             
             case 5: //SP меч
-                if (SwordAttack(steamPunkSword));
+                if (SwordAttack(steamPunkSword)) ;
+                break;
+            case 6: //Dbl меч
+                if (SwordAttack(disabledSword)) ;
                 break;
         }
     }
 
     bool SwordAttack(HighTechGun gunObject)
     {
-        if (disabledSword.isAvailable)
+        if ((Time.time > disabledSword.lastFireTime + disabledSword.fireRate) && disabledSword.isAvailable)
         {
-            if (Time.time > disabledSword.lastFireTime + disabledSword.fireRate)
-            {
-                JustSpherecast();
-            }
-            else if (Time.time > gunObject.lastFireTime + gunObject.fireRate)
-            {
-                JustSpherecast();
-            }
+            print("sweng");
+            JustSpherecast();
+            return true;
+        }
+        if (Time.time > gunObject.lastFireTime + gunObject.fireRate)
+        {
+            print("sweng");
+            JustSpherecast();
             return true;
         }
         return false;
@@ -308,8 +324,8 @@ public class Combat : MonoBehaviour
     
     void JustSpherecast()
     {
-        Vector3 spawnPosition = spawnPointSphereMelee.position + spawnPointSphereMelee.forward * 2f;
-        GameObject sphereMelee = Instantiate(prefabSphereMelee, spawnPosition, Quaternion.identity);
+        Vector3 spawnPosition = player.transform.position + player.transform.forward * 0.5f;
+        sphereMelee = Instantiate(prefabSphereMelee, spawnPosition, Quaternion.identity);
         sphereMelee.transform.SetParent(player.transform);
         timeTemp = Time.time;
     }
@@ -318,13 +334,14 @@ public class Combat : MonoBehaviour
     {
         if (Time.time > gunObject.lastFireTime + gunObject.fireRate)
         {
+            print("pew");
             gunObject.lastFireTime = Time.time;
                     
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = new Ray(player.transform.position, Camera.main.transform.forward);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, gunObject.distance) && hit.collider.CompareTag("Enemy"))
             {
-                
+                print("HIT!");
             }
             return true;
         }
@@ -333,23 +350,27 @@ public class Combat : MonoBehaviour
     
     bool SteamPunkAttack(SteamPunkGun gunObject)
     {
-        if (!isReloading && (gunObject.ammo <= 0) && (gunObject == pistol)) // ЗВУК ПЕРЕЗАРЯДКИ ПИСТОЛЯ + АНИМАЦИЯ
+        if (!isReloading && (gunObject.ammo <= 0) && (gunObject == shotgun)) // ЗВУК ПЕРЕЗАРЯДКИ ПИСТОЛЯ + АНИМАЦИЯ
         {
+            print("Reloading!");
             isReloading = true;
             timeTempReload = Time.time;
         }
-        else if ((gunObject == flamethrower) && (gunObject.ammo == 0)) // ПАР
+        else if ((gunObject == flamethrower) && (gunObject.ammo <= 0)) // ПАР добавлять в адпдейте
         {
             fireDelayTemp = -1;
+            isFireReloading = true;
         }
         else if ((Time.time > gunObject.lastFireTime + gunObject.fireRate) && (gunObject == shotgun))
         {
+            print("shotgunned!");
             gunObject.lastFireTime = Time.time;
             Conecast(gunObject);
             return true;
         }
         else if ((fireDelayTemp == -1) && (gunObject == flamethrower))
         {
+            print("FIRE");
             fireDelayTemp = 9;
         }
         return false;
@@ -366,12 +387,13 @@ public class Combat : MonoBehaviour
             gunObject.distance);
 
         gunObject.ammo -= 1;
+        print($"ammo left {gunObject.ammo}");
 
         foreach (RaycastHit hit in hits)
         {
             if (hit.collider.CompareTag("Enemy"))
             {
-
+                print("HIT!");
             }
         }
     }
@@ -438,6 +460,11 @@ public class Combat : MonoBehaviour
             steamPunkSword.gunObject.SetActive(dimension == 1);
             highTechSword.gunObject.SetActive(dimension == 2);
             isDimensionChanged = true;
+            print("dimansio swithed");
+            
+            DisableAllWeapon();
+            guns[FindWeaponID()].gunObject.GetComponent<MeshRenderer>().enabled = true;
+            print($"Using {guns[FindWeaponID()].gunObject.tag}");
         }
     }
 }
