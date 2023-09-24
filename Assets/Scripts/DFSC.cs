@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class DFSC : MonoBehaviour
 {
     public Material skybox;
     public GameObject SpaceWorld;
-
 
     public bool dimension = false;
     public float i = 1f;
@@ -20,6 +20,8 @@ public class DFSC : MonoBehaviour
     public float skyRotateSpeed = 3f;
     public float worldRotateSpeed = 1f;
 
+
+
     private void Start()
     {
         
@@ -31,6 +33,50 @@ public class DFSC : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        switch (Random.Range(0, 11))
+        {
+            case 10:
+                skyRotateDir = true;
+                break;
+            case 9:
+                worldRotateSpeed = Random.Range(1.0f, 2.0f);
+                break;
+            case 8:
+                skyRotateDir = false;
+                break;
+            case 7:
+                worldRotateDir = false;
+                break;
+            case 6:
+                worldRotateDir = true;
+                break;
+            case 5:
+                rotateWorld = true;
+                break;
+            case 4:
+                rotateWorld = false;
+                break;
+            case 3:
+                dimension = false;
+                break;
+            case 2:
+                dimension = true;
+                break;
+            case 1:
+                skyRotateSpeed = Random.Range(3.0f, 6.0f);
+                break;
+            default:
+                break;
+        }
+
+
+        if (Random.Range(0, 10) == 5)
+            
+        if (Random.Range(0, 10) == 6)
+            
+        if(Random.Range(0, 10) == 7)
+            
+        if(Random.Range(0, 10) == 5)
         
         if(skyRotateDir)
             i = i + 1f;
