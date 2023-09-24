@@ -82,8 +82,11 @@ public class PlayerMove : MonoBehaviour
             }
             collisionCount -= 1;
             collisionList.RemoveAt(0);
-            currentPos = collisionList[0].transform.position;
-            lastPos = currentPos;
+            if (collisionList.Count > 0)
+            {
+                currentPos = collisionList[0].transform.position;
+                lastPos = currentPos;
+            }
         }
     }
 

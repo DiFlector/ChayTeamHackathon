@@ -34,8 +34,12 @@ public class Enemy : MonoBehaviour
     private GameObject _player;
     private float _nextFireTime;
 
+
+    public Animator anima;
+
     void Start()
     {
+        anima = GetComponent<Animator>();
         _deathShot = 0;
         _hp = _maxHp;
         _slider.maxValue = _maxHp;
@@ -63,20 +67,14 @@ public class Enemy : MonoBehaviour
             Death();
         }
 
-        if (Time.timeScale < 1.0f)
-        {
-            _idleSound.SetActive(false);
-        }
-        else
-        {
-            _idleSound.SetActive(true);
-        }
+
 
         transform.LookAt(_player.transform.position);
 
+
         Vector3 direction = Vector3.forward;
         Ray theRay = new Ray(transform.position, transform.TransformDirection(direction * _range));
-        Debug.DrawRay(transform.position, transform.TransformDirection(direction * _range));
+        Debug.DrawRay(transform.position, transform.TransformDirection(direction * _range), Color.red);
 
         if (Physics.Raycast(theRay, out RaycastHit hit, _range))
         {
@@ -91,9 +89,10 @@ public class Enemy : MonoBehaviour
 
     private void Fire()
     {
+        anima.SetTrigger("Shoot");
         if (!_isDroid)
         {
-            GetComponent<Animator>().SetTrigger("Fire");
+            
             GameObject bullet = Instantiate(_bullet, _spawnPoint.position, Quaternion.identity);
             Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
             bulletRigidbody.velocity = (_player.transform.position - _spawnPoint.position).normalized * _speedBullet;
@@ -101,7 +100,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            GetComponent<Animator>().SetTrigger("Fire");
+            
             GameObject bullet = Instantiate(_bullet, _spawnPoint.position, Quaternion.identity);
             GameObject bullet2 = Instantiate(_bullet, _spawnPoint2.position, Quaternion.identity);
             Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
