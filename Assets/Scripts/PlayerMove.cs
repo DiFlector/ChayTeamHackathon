@@ -41,8 +41,8 @@ public class PlayerMove : MonoBehaviour
     private bool hookActive;
     private Vector3 hookDirection;
     private Vector3 currentSpeed;
-    [SerializeField] private float jetpackFuel;
-    [SerializeField] private float maxFuel;
+    public float jetpackFuel;
+    public float maxFuel;
     [SerializeField] private bool _canJump;
 
     void Start()
@@ -95,7 +95,7 @@ public class PlayerMove : MonoBehaviour
         cy = Mathf.Clamp(cy, -90, 90);
         _camera.transform.rotation = Quaternion.Euler(cy, cx, 0);
 
-        print($"{_canJump}, {collisionCount}");
+        //print($"{_canJump}, {collisionCount}");
         if (Input.GetKey(KeyCode.Space))
         {
             if (_canJump)
